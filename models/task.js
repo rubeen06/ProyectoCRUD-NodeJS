@@ -25,12 +25,12 @@ const AsignaturaSchema = Schema({
 
 
 
-TaskSchema.methods.findAll= async function (usuario) {
-  const Task = mongoose.model("tasks", TaskSchema);
-  return await Task.find({'usuario':usuario});
+AsignaturaSchema.methods.findAll= async function (usuario) {
+  const Asignatura  = mongoose.model("asignaturas", AsignaturaSchema);
+  return await Asignatura.find({'usuario':usuario});
 };
 
-TaskSchema.methods.insert= async function () {
+AsignaturaSchema.methods.insert= async function () {
   //await this.save();
   await this.save((err, res) => {
     err ? console.log(err) : "";
@@ -38,31 +38,31 @@ TaskSchema.methods.insert= async function () {
   });
 };
 
-TaskSchema.methods.update= async (id, task) => {
-  const Task = mongoose.model("tasks", TaskSchema);
-  await Task.updateOne({_id: id}, task, err => {
+AsignaturaSchema.methods.update= async (id, task) => {
+  const Asignatura = mongoose.model("asignaturas", AsignaturaSchema);
+  await Asignatura.updateOne({_id: id}, task, err => {
     if (err) console.log(err);
   });
   console.log(id + " updated");
 };
 
-TaskSchema.methods.delete= async function (id) {
-  const Task = mongoose.model("tasks", TaskSchema);
-  await Task.deleteOne({_id: id}, err => {
+AsignaturaSchema.methods.delete= async function (id) {
+  const Asignatura = mongoose.model("asignaturas", AsignaturaSchema);
+  await Asignatura.deleteOne({_id: id}, err => {
     if (err) console.log(err);
   });
   console.log(id + " deleted");
 
 };
 
-TaskSchema.methods.findById= async function (id) {
-  const Task = mongoose.model("tasks", TaskSchema);
-  return await Task.findById(id);
+AsignaturaSchema.methods.findById= async function (id) {
+  const Asignatura = mongoose.model("asignaturas", AsignaturaSchema);
+  return await Asignatura.findById(id);
 };
 
-TaskSchema.methods.findSearch= async function (search, usuario) {
-  const Task = mongoose.model("tasks", TaskSchema);
-  return await Task.find({'title' : new RegExp(search, 'i'),'usuario': usuario});
+AsignaturaSchema.methods.findSearch= async function (search, usuario) {
+  const Asignatura = mongoose.model("asignaturas", AsignaturaSchema);
+  return await Asignatura.find({'nombre' : new RegExp(search, 'i'),'usuario': usuario});
 };
 
 
