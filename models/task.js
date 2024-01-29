@@ -1,24 +1,28 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const TaskSchema = Schema({
-  title: {
+const AsignaturaSchema = Schema({
+  nombre: {
     type: String,
     required: true
-},
-
-  description: {
-    type: String,
-    required: true
-},
-  status: {
-    type: Boolean,
-    default: false
   },
-  usuario: [
-    {type: mongoose.Schema.Types.ObjectId, ref:'user'}
-]
+  planEstudios: {
+    type: String,
+    required: true
+  },
+  cuatrimestre: {
+    type: Number,
+    required: true
+  },
+  curso: {
+    type: Number,
+    required: true
+  },
+  software: [{
+    type: String
+  }]
 });
+
 
 
 TaskSchema.methods.findAll= async function (usuario) {
@@ -62,4 +66,4 @@ TaskSchema.methods.findSearch= async function (search, usuario) {
 };
 
 
-module.exports = mongoose.model('tasks', TaskSchema);
+module.exports = mongoose.model('asignaturas', AsignaturaSchema);
