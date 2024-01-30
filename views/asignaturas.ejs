@@ -7,15 +7,16 @@
     <div class="col-md-5">
       <div class="card">
         <div class="card-body">
-          <form action="/tasks/add" method="post">
+          <form action="/asignaturas/add" method="post">
             <div class="form-group">
-              <input class="form-control" type="text" name="title" placeholder="Title">
+              <input class="form-control" type="text" name="nombre" placeholder="Nombre">
             </div>
             <div class="form-group">
-              <textarea class="form-control" name="description" cols="80"
-                placeholder="Add a Description"
+              <textarea class="form-control" name="planEstudios" cols="80"
+                placeholder="Plan de Estudios"
                 ></textarea>
             </div>
+            <!-- Aquí puedes agregar los demás campos de tu esquema Asignatura -->
             <button class="btn btn-primary" type="submit">
               Add
             </button>
@@ -30,26 +31,26 @@
         <thead>
           <tr>
             <th>N°</th>
-            <th>Title</th>
-            <th>Description</th>
+            <th>Nombre</th>
+            <th>Plan de Estudios</th>
             <th>Operations</th>
           </tr>
         </thead>
         <tbody>
-          <% for(var i=0; i < tasks.length; i++) { %>
+          <% for(var i=0; i < asignaturas.length; i++) { %>
             <tr>
               <td><%= i + 1%></td>
-              <td><strong><%= tasks[i].title %></strong></td>
-              <td><%= tasks[i].description %></td>
+              <td><strong><%= asignaturas[i].nombre %></strong></td>
+              <td><%= asignaturas[i].planEstudios %></td>
               <td>
                 <a
-                  class="<%= tasks[i].status ? 'btn btn-success' : 'btn btn-dark'%>"
-                  href="/tasks/turn/<%= tasks[i]._id %>">Done</a>
-                <a href="/tasks/delete/<%= tasks[i]._id %>"
+                  class="<%= asignaturas[i].status ? 'btn btn-success' : 'btn btn-dark'%>"
+                  href="/asignaturas/turn/<%= asignaturas[i]._id %>">Done</a>
+                <a href="/asignaturas/delete/<%= asignaturas[i]._id %>"
                   class="btn btn-danger">
                   Delete
                 </a>
-                <a href="/tasks/edit/<%= tasks[i]._id %>" class="btn btn-info">
+                <a href="/asignaturas/edit/<%= asignaturas[i]._id %>" class="btn btn-info">
                   Edit
                 </a>
               </td>
