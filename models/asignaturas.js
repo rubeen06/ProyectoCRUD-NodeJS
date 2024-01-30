@@ -37,9 +37,9 @@ AsignaturasSchema.methods.insert= async function () {
   });
 };
 
-AsignaturasSchema.methods.update= async (id, task) => {
+AsignaturasSchema.methods.update= async (id, asignatura) => {
   const Asignatura = mongoose.model("asignaturas", AsignaturasSchema);
-  await Asignatura.updateOne({_id: id}, task, err => {
+  await Asignatura.updateOne({_id: id}, asignatura, err => {
     if (err) console.log(err);
   });
   console.log(id + " updated");
