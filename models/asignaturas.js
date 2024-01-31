@@ -24,45 +24,47 @@ const AsignaturasSchema = Schema({
 });
 
 
-AsignaturasSchema.methods.findAll= async function (usuario) {
-  const Asignatura = mongoose.model("asignaturas", AsignaturasSchema);
-  return await Asignatura.find({'usuario':usuario});
+AsignaturasSchema.methods.findAll = async function () {
+  const Asignatura = mongoose.model("Asignaturas", AsignaturasSchema);
+  return await Asignatura.find()
+    .then(result => {return result})
+    .catch(error => console.log("q"+error));
 };
 
-AsignaturasSchema.methods.insert= async function () {
-  //await this.save();
-  await this.save((err, res) => {
-    err ? console.log(err) : "";
-    console.log("saved: " + res);
-  });
-};
-
-AsignaturasSchema.methods.update= async (id, asignatura) => {
-  const Asignatura = mongoose.model("asignaturas", AsignaturasSchema);
-  await Asignatura.updateOne({_id: id}, asignatura, err => {
-    if (err) console.log(err);
-  });
-  console.log(id + " updated");
-};
-
-AsignaturasSchema.methods.delete= async function (id) {
-  const Asignatura = mongoose.model("asignaturas", AsignaturasSchema);
-  await Asignatura.deleteOne({_id: id}, err => {
-    if (err) console.log(err);
-  });
-  console.log(id + " deleted");
-
-};
-
-AsignaturasSchema.methods.findById= async function (id) {
-  const Asignatura = mongoose.model("asignaturas", AsignaturasSchema);
-  return await Asignatura.findById(id);
-};
-
-AsignaturasSchema.methods.findSearch= async function (search, usuario) {
-  const Asignatura = mongoose.model("asignaturas", AsignaturasSchema);
-  return await Asignatura.find({'title' : new RegExp(search, 'i'),'usuario': usuario});
+AsignaturasSchema.methods.insert = async function () {
+  await this.save()
+  .then(result => console.log(result))
+  .catch(error => console.log(error));
 };
 
 
-module.exports = mongoose.model('asignaturas', AsignaturasSchema);
+AsignaturasSchema.methods.update = async (id, asignatura) => {
+  const Asignatura = mongoose.model("Asignaturas", AsignaturasSchema);
+  await Asignatura.updateOne({_id: id}, asignatura)
+    .then(() => console.log(id + " updated"))
+    .catch(error => console.log(error));
+};
+
+AsignaturasSchema.methods.delete = async function (id) {
+  const Asignatura = mongoose.model("Asignaturas", AsignaturasSchema);
+  await Asignatura.deleteOne({_id: id})
+    .then(() => console.log(id + " deleted"))
+    .catch(error => console.log(error));
+};
+
+AsignaturasSchema.methods.findById = async function (id) {
+  const Asignatura = mongoose.model("Asignaturas", AsignaturasSchema);
+  return await Asignatura.findById(id)
+    .then(result => console.log(result))
+    .catch(error => console.log(error));
+};
+
+AsignaturasSchema.methods.findSearch = async function (search, usuario) {
+  const Asignatura = mongoose.model("Asignaturas", AsignaturasSchema);
+  return await Asignatura.find({'nombre' : new RegExp(search, 'i'),'usuario': usuario})
+    .then(result => console.log(result))
+    .catch(error => console.log(error));
+};
+
+
+module.exports = mongoose.model('Asignaturas', AsignaturasSchema);
