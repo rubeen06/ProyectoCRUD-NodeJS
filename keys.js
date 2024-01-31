@@ -1,6 +1,6 @@
 module.exports = {
   mongodb: {
-    URI: 'mongodb://localhost:27017/login-node'
+    URI: 'mongodb+srv://nataliabd82:1234@cluster0.toliojp.mongodb.net/campus?retryWrites=true&w=majority'
     //PROBANDO TERRY
   }
 };
