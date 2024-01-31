@@ -24,44 +24,46 @@ const AsignaturasSchema = Schema({
 });
 
 
-AsignaturasSchema.methods.findAll= async function (usuario) {
+AsignaturasSchema.methods.findAll = async function (usuario) {
   const Asignatura = mongoose.model("asignaturas", AsignaturasSchema);
-  return await Asignatura.find({'usuario':usuario});
+  return await Asignatura.find({'usuario': usuario})
+    .then(result => console.log(result))
+    .catch(error => console.log(error));
 };
 
-AsignaturasSchema.methods.insert= async function () {
-  //await this.save();
-  await this.save((err, res) => {
-    err ? console.log(err) : "";
-    console.log("saved: " + res);
-  });
+AsignaturasSchema.methods.insert = async function () {
+  await this.save()
+  .then(result => console.log(result))
+  .catch(error => console.log(error));
 };
 
-AsignaturasSchema.methods.update= async (id, asignatura) => {
+
+AsignaturasSchema.methods.update = async (id, asignatura) => {
   const Asignatura = mongoose.model("asignaturas", AsignaturasSchema);
-  await Asignatura.updateOne({_id: id}, asignatura, err => {
-    if (err) console.log(err);
-  });
-  console.log(id + " updated");
+  await Asignatura.updateOne({_id: id}, asignatura)
+    .then(() => console.log(id + " updated"))
+    .catch(error => console.log(error));
 };
 
-AsignaturasSchema.methods.delete= async function (id) {
+AsignaturasSchema.methods.delete = async function (id) {
   const Asignatura = mongoose.model("asignaturas", AsignaturasSchema);
-  await Asignatura.deleteOne({_id: id}, err => {
-    if (err) console.log(err);
-  });
-  console.log(id + " deleted");
-
+  await Asignatura.deleteOne({_id: id})
+    .then(() => console.log(id + " deleted"))
+    .catch(error => console.log(error));
 };
 
-AsignaturasSchema.methods.findById= async function (id) {
+AsignaturasSchema.methods.findById = async function (id) {
   const Asignatura = mongoose.model("asignaturas", AsignaturasSchema);
-  return await Asignatura.findById(id);
+  return await Asignatura.findById(id)
+    .then(result => console.log(result))
+    .catch(error => console.log(error));
 };
 
-AsignaturasSchema.methods.findSearch= async function (search, usuario) {
+AsignaturasSchema.methods.findSearch = async function (search, usuario) {
   const Asignatura = mongoose.model("asignaturas", AsignaturasSchema);
-  return await Asignatura.find({'title' : new RegExp(search, 'i'),'usuario': usuario});
+  return await Asignatura.find({'nombre' : new RegExp(search, 'i'),'usuario': usuario})
+    .then(result => console.log(result))
+    .catch(error => console.log(error));
 };
 
 
