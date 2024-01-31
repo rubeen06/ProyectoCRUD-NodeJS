@@ -4,7 +4,7 @@ const Asignatura = require('../models/asignaturas');
 
 router.get('/asignaturas', isAuthenticated, async (req, res) => {
   const asignatura = new Asignatura();
-  const asignaturas = await asignatura.findAll(req.user._id);
+  const asignaturas = await asignatura.findAll();
   res.render('asignaturas', {
     asignaturas
   });
@@ -12,7 +12,6 @@ router.get('/asignaturas', isAuthenticated, async (req, res) => {
 
 router.post('/asignaturas/add', isAuthenticated, async (req, res, next) => {
   const asignatura = new Asignatura(req.body);
-  asignatura.usuario = req.user._id;
   await asignatura.insert();
   res.redirect('/asignaturas');
 });
