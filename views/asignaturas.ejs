@@ -1,74 +1,120 @@
 <% include partials/_header %>
-
-<div class="container">
-
-  <div class="row">
-    <!--FORM-->
-    <div class="col-md-5">
-      <div class="card">
-        <div class="card-body">
-          <form action="/asignaturas/add" method="post">
-            <div class="form-group">
-              <input class="form-control" type="text" name="nombre" placeholder="Nombre">
+  <div class="container">
+    <div class="row">
+      <!--FORM-->
+      <% if(user.rol=="Administrador" ) { %>
+        <div class="col-md-5">
+          <div class="card">
+            <div class="card-body">
+              <form action="/asignaturas/add" method="post">
+                <div class="form-group">
+                  <input class="form-control" type="text" name="nombre" placeholder="Nombre">
+                </div>
+                <div class="form-group">
+                  <select name="planEstudios">
+                    <option value="grado" selected>Grado</option>
+                    <option value="master">Master</option>
+                    <option value="doctorado">Doctorado</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <input class="form-control" type="number" min="0" step="1" name="cuatrimestre" placeholder="Cuatrimestre">
+                </div>
+                <div class="form-group">
+                  <input class="form-control" type="number" min="0" step="0.1" name="curso" placeholder="Curso">
+                </div>
+                
+                <!-- Aquí puedes agregar los demás campos de tu esquema Asignatura -->
+                <button class="btn btn-primary" type="submit">
+                  Add
+                </button>
+              </form>
+              <form method="post" enctype="multipart/form-data" action="/asignaturas/addAsignaturaCSV">
+                <center>    
+                     <p><input type="file" name="file" accept="text/CSV" /></p>  
+                     <button class="btn btn-primary" type="submit">
+                      Añadir CSV
+                    </button>
+                </center>
+              </form>
             </div>
-            <div class="form-group">
-              <select name="planEstudios">
-                <option value="grado" selected>Grado</option>
-                <option value="master" >Master</option>
-                <option value="doctorado">Doctorado</option>
-              </select>  
-            </div>
-            <div class="form-group">
-              <input class="form-control" type="text" name="cuatrimestre" placeholder="cuatrimestre">
-            </div>
-            <div class="form-group">
-              <input class="form-control" type="number" name="curso" placeholder="curso">
-            </div>
-           
-            <!-- Aquí puedes agregar los demás campos de tu esquema Asignatura -->
-            <button class="btn btn-primary" type="submit">
-              Add
-            </button>
-          </form>
+          </div>
         </div>
-      </div>
-    </div>
-
-    <!-- LIST -->
-    <div class="col-md-7">
-      <table class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th>N°</th>
-            <th>Nombre</th>
-            <th>Plan de Estudios</th>
-            <th>cuatrimestre</th>
-            <th>curso</th>
-            <th>Operations</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for(var i=0; i < asignaturas.length; i++) { %>
-            <tr>
-              <td><%= i + 1%></td>
-              <td><strong><%= asignaturas[i].nombre %></strong></td>
-              <td><%= asignaturas[i].planEstudios %></td>
-              <td><%= asignaturas[i].cuatrimestre %></td>
-              <td><%= asignaturas[i].curso %></td>
-
-              <td>
-              
-                <a href="/asignaturas/delete/<%= asignaturas[i]._id %>"
-                  class="btn btn-danger">
-                  Delete
-                </a>
-                <a href="/asignaturas/edit/<%= asignaturas[i]._id %>" class="btn btn-info">
-                  Edit
-                </a>
-              </td>
-            </tr>
-          <% } %>
-        </tbody>
+        <% } %>
+          <!-- HACER IF PARA LOS ROLES DE USUARIO QUE TIENE QUE TENER COMO ATRIBUTO ROL, EN EL HEADER, TIENE QUE HABER UN APARTADO QUE SEA O ADMIN, O ALUMNO, O PROFESOR  -->
+          <!-- LIST -->
+          <div class="col-md-7">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>N°</th>
+                  <th>Nombre</th>
+                  <% if (user.rol !="Alumno" ) { %>
+                    <th>Plan de Estudios</th>
+                    <th>Cuatrimestre</th>
+                    <th>Curso</th>
+                    <th>Modificar</th>
+                    <% } %>
+                    <% if (user.rol=="Administrador" ) { %>
+                      <th>Eliminar</th>
+                    <% } %>
+                </tr>
+              </thead>
+              <tbody>
+                <% for(var i=0; i < asignaturas.length; i++) { %>
+                  <% if(user.rol=="Alumno" || user.rol=="Profesor" ) { %>
+                    <% for(var j=0; j < user.asignaturas.length; j++) { %>
+                      <% if(asignaturas[i]._id.toString()==user.asignaturas[j].toString()) { %>
+                        <tr>
+                          <td>
+                            <%= i + 1%>
+                          </td>
+                          <td><strong>
+                              <%= asignaturas[i].nombre %>
+                            </strong></td>
+                          <% if (user.rol != "Alumno") { %>
+                          <td><%= asignaturas[i].planEstudios %></td>
+                          <td><%= asignaturas[i].cuatrimestre %></td>
+                          <td><%= asignaturas[i].curso %></td>
+                          <td>
+                            <a href="/asignaturas/edit/<%= asignaturas[i]._id %>" class="btn btn-info">
+                              Edit
+                            </a>
+                          </td>
+                          <% } %>
+                          <% if (user.rol == "Administrador") { %>
+                          <td>
+                            <a href="/asignaturas/delete/<%= asignaturas[i]._id %>"
+                              class="btn btn-danger">
+                              Delete
+                            </a>
+                          </td>
+                          <% } %>
+                        </tr>
+                      <% } %>
+                    <% } %>
+                  <% } else if(user.rol == "Administrador") { %>
+                    <tr>
+                      <td><%= i + 1%></td>
+                      <td><strong><%= asignaturas[i].nombre %></strong></td>
+                      <td><%= asignaturas[i].planEstudios %></td>
+                      <td><%= asignaturas[i].cuatrimestre %></td>
+                      <td><%= asignaturas[i].curso %></td>
+                      <td>
+                        <a href="/asignaturas/edit/<%= asignaturas[i]._id %>" class="btn btn-info">
+                          Edit
+                        </a>
+                      </td>
+                      <td>
+                        <a href="/asignaturas/delete/<%= asignaturas[i]._id %>"
+                          class="btn btn-danger">
+                          Delete
+                        </a>
+                      </td>
+                    </tr>
+                  <% } %>
+                <% } %>
+              </tbody>
       </table>
 
     </div>
@@ -77,3 +123,4 @@
 </div>
 
 <% include partials/_footer %>
+

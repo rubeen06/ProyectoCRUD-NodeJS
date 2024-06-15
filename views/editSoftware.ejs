@@ -1,0 +1,13 @@
+<% include partials/_header %>
+
+<div class="container">
+  <form action="/aulavirtual/asigAula/update/<%= id %>/<%= index %>" method="post">
+    <div class="form-group">
+      <label for="software">URL</label>
+      <input type="text" id="software" name="software" value="<%= software %>">
+    </div>
+    <button class="btn btn-primary" type="submit">Guardar cambios</button>
+  </form>
+</div>
+
+<% include partials/_footer %>

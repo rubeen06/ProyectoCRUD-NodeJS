@@ -1,0 +1,13 @@
+<% include partials/_header %>
+
+<div class="container">
+  <h1>Enviar una sugerencia</h1>
+  <form action="/sugerencias" method="post">
+    <div class="form-group">
+      <textarea class="form-control" name="content" placeholder="Escribe tu sugerencia aquí"></textarea>
+    </div>
+    <button class="btn btn-primary" type="submit">Enviar</button>
+  </form>
+</div>
+
+<% include partials/_footer %>

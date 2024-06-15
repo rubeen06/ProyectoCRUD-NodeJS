@@ -19,10 +19,9 @@ const AsignaturasSchema = Schema({
     required: true
   },
   software: [{
-    type: String
+      type: Array
   }]
 });
-
 
 AsignaturasSchema.methods.findAll = async function () {
   const Asignatura = mongoose.model("Asignaturas", AsignaturasSchema);
@@ -36,7 +35,6 @@ AsignaturasSchema.methods.insert = async function () {
   .then(result => console.log(result))
   .catch(error => console.log(error));
 };
-
 
 AsignaturasSchema.methods.update = async (id, asignatura) => {
   const Asignatura = mongoose.model("Asignaturas", AsignaturasSchema);
@@ -55,16 +53,41 @@ AsignaturasSchema.methods.delete = async function (id) {
 AsignaturasSchema.methods.findById = async function (id) {
   const Asignatura = mongoose.model("Asignaturas", AsignaturasSchema);
   return await Asignatura.findById(id)
-    .then(result => console.log(result))
+    .then(result => { return result} )
     .catch(error => console.log(error));
 };
 
 AsignaturasSchema.methods.findSearch = async function (search, usuario) {
   const Asignatura = mongoose.model("Asignaturas", AsignaturasSchema);
   return await Asignatura.find({'nombre' : new RegExp(search, 'i'),'usuario': usuario})
-    .then(result => console.log(result))
+    .then(result => { return result})
     .catch(error => console.log(error));
 };
 
+//UNO DE LOS 2 DEBERIA ESTAR BIEN, HAY QUE QUEDARSE SOLO CON 1 METODO DE BUSCAR SOFTWARE
+AsignaturasSchema.methods.insert = async function(software) {
+  // Añade el software a la asignatura
+  this.software.push(software);
+
+  // Guarda la asignatura
+  await this.save()
+  .then(result => console.log(result))
+  .catch(error => console.log(error));
+};
+
+//Nuevo para sofware:
+AsignaturasSchema.methods.insertSoftware = async function(software, userId) {
+  //Añado el software a la asignatura
+  this.software.push({
+    url: software.url,
+    descripcion: software.descripcion,
+    addedBy: userId
+  });
+
+  //Guardo la asignatura
+  await this.save()
+  .then(result => console.log(result))
+  .catch(error => console.log(error));
+};
 
 module.exports = mongoose.model('Asignaturas', AsignaturasSchema);

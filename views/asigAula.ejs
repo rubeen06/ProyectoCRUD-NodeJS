@@ -1,0 +1,79 @@
+<% include partials/_header %>
+<style>
+  .no-margin-padding {
+    margin: 0;
+    padding: 0;
+  }
+</style>
+  <div class="container">
+
+
+          <h1><span><%= asignatura.nombre %></span></h1>
+          <div class="col-md-7">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>URL</th>
+
+
+              </thead>
+              <tbody>
+                <tr>
+                  <td><%= asignatura.nombre %></td>
+                  <td>
+                    <% for (var i = 0; i < asignatura.software.length; i++) { %>
+                      <div>
+                        <a href="/asigAula/download/<%= asignatura._id %>/<%= asignatura.software[i] %>" class="text-dark" download><p><%= asignatura.software[i] %></p></a>
+                        <% if (user.rol == "Administrador" || user.rol == "Profesor") { %>
+                        <a href="/aulavirtual/asigAula/edit/<%= asignatura._id %>/<%= i %>" class="btn btn-info">Editar</a>
+                        <% } %>
+                        <% if (user.rol == "Administrador") { %>
+                        <form action="/aulavirtual/asigAula/delete/<%= asignatura._id %>/<%= i %>" method="post" style="display: inline;">
+                          <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                        <% } %>
+                        <% if(i < asignatura.software.length - 1) { %>
+                          <hr>
+                        <% } %>
+                      </div>
+                    <% } %>
+                  </td>
+                </tr>
+              </tbody>
+      </table>
+
+      <% if (user.rol == "Administrador" || user.rol == "Profesor") { %>
+      <div class="col-md-5">
+        <div class="card">
+          <div class="card-body">
+            <form action="/aulavirtual/asigAula/add/<%=asignatura._id%>" method="post">
+              <div class="form-group">
+                <input class="form-control" type="url" name="software" placeholder="URL">
+              </div>
+              <!-- Aquí puedes agregar los demás campos de tu esquema Asignatura -->
+              <button class="btn btn-primary" type="submit">
+                Add
+              </button>
+            </form>
+            <form action='/aulavirtual/asigAula/add/upload/<%=asignatura._id%>' method="POST" enctype="multipart/form-data"> 
+              <input type="file" name="file"> 
+              <input type="submit" value="Subir" class="btn btn-primary"> 
+              </form>               
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function editUrl(i) {
+    var p = document.getElementById('url_' + i);
+    p.contentEditable = "true";
+  }
+</script>
+
+<% include partials/_footer %>

@@ -1,0 +1,69 @@
+<% include partials/_header %>
+
+  <div class="container">
+
+    
+          <!-- HACER IF PARA LOS ROLES DE USUARIO QUE TIENE QUE TENER COMO ATRIBUTO ROL, EN EL HEADER, TIENE QUE HABER UN APARTADO QUE SEA O ADMIN, O ALUMNO, O PROFESOR  -->
+          <!-- LIST -->
+          <div class="col-md-7">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>N°</th>
+                  <th>Nombre</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for(var i=0; i < asignaturas.length; i++) { %>
+                    <% if(user.rol=="Alumno" || user.rol=="Profesor" ) { %>
+                      <% for(var j=0; j < user.asignaturas.length; j++) { %>
+                        <% if(asignaturas[i]._id.toString()==user.asignaturas[j].toString()) { %>
+                          <tr>
+                            <td>
+                              <%= i + 1%>
+                            </td>
+                            <td><strong>
+                                <a href="/aulavirtual/asigAula/<%= asignaturas[i]._id %>"><%= asignaturas[i].nombre %></a>
+                              </strong></td>
+                          </tr>
+                        <% } %>
+                      <% } %>
+                    <% } else if(user.rol == "Administrador") { %>
+                      <tr>
+                        <td><%= i + 1%></td>
+                        <td><strong>
+                            <a href="/aulavirtual/asigAula/<%= asignaturas[i]._id %>"><%= asignaturas[i].nombre %></a>
+                          </strong></td>
+                        
+                      </tr>
+                    <% } %>
+                  <% } %>
+              </tbody>
+      </table>
+      <% if(user.rol == 'Alumno') { %>
+        <a href="/sugerencias" class="suggestion-link">Enviar una sugerencia</a>
+      <% } %> 
+    </div>
+     
+  </div>
+</div>
+
+<style>
+  .suggestion-link {
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  
+  .suggestion-link:hover {
+    background-color: #45a049;
+  }
+</style>
+
+<% include partials/_footer %>

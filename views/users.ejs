@@ -1,0 +1,161 @@
+<% include partials/_header %>
+<div class="container">
+
+    <div class="row">
+      <!--FORM-->
+      <div class="col-md-5">
+        <div class="card">
+          <div class="card-body">
+            <form action="/users/add" method="post">
+              <div class="form-group">
+                <input class="form-control" type="text" name="nombre" placeholder="Nombre">
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="text" name="apellidos" placeholder="Apellidos">
+              </div>
+              <div class="form-group">
+                <select name="rol">
+                  <option value="Administrador" selected>Administrador</option>
+                  <option value="Profesor" >Profesor</option>
+                  <option value="Alumno">Alumno</option>
+                </select>  
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="text" name="email" placeholder="email">
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="password" name="password" placeholder="password">
+              </div>
+              <div class="form-group">
+                <select name="rol" id="planEstudios" onchange="cambiarValores()" required>
+                  <option value="grado" selected>grado</option>
+                  <option value="master" >master</option>
+                  <option value="doctorado">doctorado</option>
+                </select>  
+              </div>
+              
+              <div class="form-group" id="asigGrado">
+                <select name="grado"multiple>
+                  <% for(var i = 0; i < asignaturas.length; i++) { %>
+                    <% if (asignaturas[i].planEstudios == "grado") { %>
+                      <option value="<%= asignaturas[i]._id %>"><%= asignaturas[i].nombre %></option>
+                    <% } %>
+                  <% } %>
+                </select>
+              </div>
+              
+              <div class="form-group" id="asigMaster">
+                <select name="master"  multiple >
+                  <% for(var i = 0; i < asignaturas.length; i++) { %>
+                    <% if (asignaturas[i].planEstudios == "master") { %>
+                      <option value="<%= asignaturas[i]._id %>"><%= asignaturas[i].nombre %></option>
+                    <% } %>
+                  <% } %>
+                </select>
+              </div>
+              
+              <div class="form-group" id="asigDoctorado">
+                <select name="doctorado" multiple >
+                  <% for(var i = 0; i < asignaturas.length; i++) { %>
+                    <% if (asignaturas[i].planEstudios == "doctorado") { %>
+                      <option value="<%= asignaturas[i]._id %>"><%= asignaturas[i].nombre %></option>
+                    <% } %>
+                  <% } %>
+                </select>
+              </div>
+              <button class="btn btn-primary" type="submit">
+                ADD
+              </button>
+             
+              <!-- Aquí puedes agregar los demás campos de tu esquema Asignatura -->
+              
+            </form>
+            <form method="post" enctype="multipart/form-data" action="/users/addUserCSV">
+              <center>    
+                   <p><input type="file" name="file" accept="text/CSV" /></p>  
+                   <button class="btn btn-primary" type="submit">
+                    Añadir CSV
+                  </button>
+              </center>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- HACER IF PARA LOS ROLES DE USUARIO QUE TIENE QUE TENER COMO ATRIBUTO ROL, EN EL HEADER, TIENE QUE HABER UN APARTADO QUE SEA O ADMIN, O ALUMNO, O PROFESOR  -->
+      <!-- LIST -->
+      <div class="col-md-7">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>N°</th>
+              <th>Nombre</th>
+              <th>Apellidos</th>
+              <th>Rol</th>
+              <th>Email</th>
+              <!--<th>Password</th>-->
+              <th>Asignaturas</th>
+              <th>Operations</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i=0; i < users.length; i++) { %>
+              <tr>
+                <td><%= i + 1%></td>
+                <td><strong><%= users[i].nombre %></strong></td>
+                <td><%= users[i].apellidos %></td>
+                <td><%= users[i].rol %></td>
+                <td><%= users[i].email %></td>
+                <!--<td><%= users[i].password %></td>-->
+                <td>
+                  <% for(var k=0; k < users[i].asignaturas.length; k++) { %>
+
+                  <% for(var j=0;j < asignaturas.length; j++){ %>
+
+                  <% if (users[i].asignaturas[k].toString()==asignaturas[j]._id.toString()){ %>
+                  <%=asignaturas[j].nombre %>
+                  <% } %>
+                  <% } %>
+                  <% } %>
+                </td>
+                <td>
+                
+                  <a href="/users/delete/<%= users[i]._id %>"
+                    class="btn btn-danger">
+                    Delete
+                  </a>
+                  <a href="/users/editUsuario/<%= users[i]._id %>" class="btn btn-info">
+                    Edit
+                  </a>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+  
+      </div>
+    </div>
+  
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      const rolSelect = document.querySelector('select[name="rol"]');
+      const asignaturasSelect = document.querySelector('select[name="asignaturas"]');
+  
+      function toggleAsignaturas() {
+        if (rolSelect.value === 'Administrador') {
+          asignaturasSelect.setAttribute('disabled', 'disabled');
+        } else {
+          asignaturasSelect.removeAttribute('disabled');
+        }
+      }
+  
+      //LLamo a la funcion al cargar la pagina
+      toggleAsignaturas();
+  
+      //Llamo a la funcion cada vez que cambio el valor del rol
+      rolSelect.addEventListener('change', toggleAsignaturas);
+    });
+  </script>
+  
+<% include partials/_footer %>

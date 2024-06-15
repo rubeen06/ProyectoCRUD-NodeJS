@@ -1,7 +1,5 @@
 <% include partials/_header %>
 
-
-
 <div class="col-md-7 mx-auto">
     <table class="table table-bordered table-hover">
       <thead>
@@ -15,13 +13,36 @@
             <td><%= user._id%></td>
           </tr>
           <tr>
+            <th>Nombre</th>
+            <td><%= user.nombre%></td>
+          </tr>
+          <tr>
+            <th>Apellidos</th>
+            <td><%= user.apellidos%></td>
+          </tr>
+          <tr>
             <th>Email</th>
             <td><%= user.email%></td>
-          </tr>          
-          <tr>
-            <th>Password</th>
-            <td><%= user.password%></td>
           </tr>
+          <tr>
+            <th>Rol</th>
+            <td><%= user.rol%></td>
+          </tr>
+          <% if (user.rol != "Administrador"){ %>
+            <tr>
+              <th>Asignaturas</th>
+              <td>
+                <%for(var i=0;i< asignaturas.length;i++){%>
+                  <%for(var j=0;j < user.asignaturas.length;j++){%>
+                    <%if(asignaturas[i]._id.toString()==user.asignaturas[j].toString()){%>
+                      <%= asignaturas[j].nombre.toString() %><br>
+
+                    <%}%>
+                    <%}%>
+                <%}%>
+              </td>
+            </tr>
+          <% } %>
       </tbody>
     </table>
 

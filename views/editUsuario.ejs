@@ -1,0 +1,80 @@
+<% include partials/_header %>
+
+<div class="container">
+  <div class="row">
+    <!--FORM-->
+    <div class="col-md-5 offset-md-3">
+      <div class="card">
+        <div class="card-body">
+          <form action="/users/editUsuario/<%= user._id %>" method="post">
+            <div class="form-group">
+              <input class="form-control" type="text" name="nombre" placeholder="Nombre" value="<%= user.nombre %>">
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" name="apellidos" placeholder="Apellidos" value="<%= user.apellidos %>">
+              </div>
+            <div class="form-group">
+              <div class="form-group">
+                <select name="rol">
+                  <option value="Administrador" <%= user.rol == 'Administrador' ? 'selected' : '' %>>Administrador</option>
+                  <option value="Profesor" <%= user.rol == 'Profesor' ? 'selected' : '' %>>Profesor</option>
+                  <option value="Alumno" <%= user.rol == 'Alumno' ? 'selected' : '' %>>Alumno</option>
+                </select>  
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="text" name="email" placeholder="Email" value="<%= user.email %>">
+              </div>
+              <!--<div class="form-group">
+                <input class="form-control" type="password" name="password" placeholder="Password" value="<%= user.password %>">
+              </div>-->
+              <div class="form-group">
+                <select name="asignaturas" multiple>
+                  <%for (var j=0; j < asignaturas.length; j++){ %>
+                    <% var encontrada = false %>
+                  <% for (var i = 0; i< user.asignaturas.length; i++) { %>
+                    <% if(user.asignaturas[i].toString()==asignaturas[j]._id.toString()){ %>
+                     <% encontrada = true %>
+
+                     <% } %>
+                    <% } %>
+                    <% if( encontrada==true ){ %>
+                      <option value= <%=asignaturas[j]._id  %> selected><%=asignaturas[j].nombre %></option>
+                      <% }else{ %>
+                        <option value= <%=asignaturas[j]._id %> ><%=asignaturas[j].nombre %></option>
+                        <% } %> 
+                    <% } %>
+                  </select>  
+              </div>
+            <button class="btn btn-primary" type="submit">
+              Update 
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const rolSelect = document.querySelector('select[name="rol"]');
+    const asignaturasSelect = document.querySelector('select[name="asignaturas"]');
+
+    function toggleAsignaturas() {
+      if (rolSelect.value === 'Administrador') {
+        asignaturasSelect.setAttribute('disabled', 'disabled');
+      } else {
+        asignaturasSelect.removeAttribute('disabled');
+      }
+    }
+
+    // Llamo a la función al cargar la página
+    toggleAsignaturas();
+
+    // Llamo a la función cada vez que cambio el valor del rol
+    rolSelect.addEventListener('change', toggleAsignaturas);
+  });
+</script>
+
+
+<% include partials/_footer %>

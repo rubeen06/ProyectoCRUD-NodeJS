@@ -1,19 +1,44 @@
+<!--
 <% include partials/_header %>
-<div class="col-md-5">
-  <div class="card">
-    <div class="card-body">
-<form action="/signup" method="POST">
-  <input type="email" name="email" placeholder="Email">
-  <input type="password" name="password" placeholder="Password">
-  <button class="btn btn-primary" type="submit">
-    SignUp
-  </button>
-</form>
+<div class="container">
+  <div class="row">
+    <!--FORM-->
+    <div class="col-md-5 offset-md-3">
+      <div class="card">
+        <div class="card-body">
+          <form action="/signup" method="post">
+            <div class="form-group">
+              <input class="form-control" type="text" name="nombre" placeholder="Nombre">
+            </div>
+            <div class="form-group">
+              <input class="form-control" type="text" name="apellidos" placeholder="Apellidos">
+            </div>
+            <div class="form-group">
+              <div class="form-group">
+                <select name="rol">
+                  <option value="Administrador" selected>Administrador</option>
+                  <option value="Profesor" >Profesor</option>
+                  <option value="Alumno">Alumno</option>
+                </select>  
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="text" name="email" placeholder="Email">
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="password" name="password" placeholder="password">
+              </div>
+            <button class="btn btn-primary" type="submit">
+              Signup 
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-</div></div>
 
 <%if (signupMessage) {%>
   <p style="color:#FF0000;"><%= signupMessage %></p>
 <% } %>
 <% include partials/_footer %>
-
+-->
